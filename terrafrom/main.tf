@@ -4,7 +4,7 @@ variable "key_name" {
 }
 
 provider "aws" {
-  region = "ap-southeast-1"
+  region = "ap-south-1"
 }
 
 resource "aws_vpc" "main" {
@@ -47,12 +47,30 @@ resource "aws_security_group" "main" {
   }
 }
 
+resource "aws_internet_gateway" "main" {
+  vpc_id = aws_vpc.main.id
+}
+
+resource "aws_route_table" "main" {
+  vpc_id = aws_vpc.main.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.main.id
+  }
+}
+
+resource "aws_route_table_association" "main" {
+  subnet_id      = aws_subnet.main.id
+  route_table_id = aws_route_table.main.id
+}
 resource "aws_instance" "Apache_and_Docker" {
-  ami           = "ami-01a00762f46d584a1" # Replace with a valid AMI ID for your region
+  ami           = "ami-01a00762f46d584a1" 
   instance_type = "t3.micro"
     key_name = var.key_name
   subnet_id     = aws_subnet.main.id
-  security_groups = [aws_security_group.main.name]
+  associate_public_ip_address = true
+  security_groups = [aws_security_group.main.id]
 
   tags = {
     description = "Apache on port 81 and Docker Application on port 8081"
@@ -61,11 +79,12 @@ resource "aws_instance" "Apache_and_Docker" {
 }
 
 resource "aws_instance" "Jenkins_Worker_Node" {
-  ami           = "ami-01a00762f46d584a1" # Replace with a valid AMI ID for your region
+  ami           = "ami-01a00762f46d584a1" 
   instance_type = "t3.micro"
   key_name = var.key_name
   subnet_id     = aws_subnet.main.id
-  security_groups = [aws_security_group.main.name]
+  associate_public_ip_address = true
+  security_groups = [aws_security_group.main.id]
 
   tags = {
     Name = "Jenkins_Worker_Node"

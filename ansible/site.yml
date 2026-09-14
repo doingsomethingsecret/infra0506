@@ -1,0 +1,13 @@
+---
+# Main playbook: configure Apache/Docker server and Jenkins worker node
+- name: Configure Apache + Docker application server
+  hosts: anginix_docker_ec2
+  become: yes
+  roles:
+    - anginix_docker_ec2
+
+- name: Configure Jenkins worker node
+  hosts: jenkins_worker_node
+  become: yes
+  roles:
+    - jenkins_worker_node

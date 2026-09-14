@@ -2,8 +2,8 @@
   apt:
     name: apache2
     state: present
+    update_cache: yes
   become: yes
-  update_cache: yes
 
 - name: Changing the default port of Apache web server
   lineinfile:

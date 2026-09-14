@@ -2,6 +2,5 @@
   apt:
     name: nodejs
     state: present
-  become: yes
-  update_cache: yes
+    update_cache: yes
 
