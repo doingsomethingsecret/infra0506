@@ -8,7 +8,7 @@ provider "aws" {
 }
 
 resource "aws_vpc" "main" {
-  cidr_block = "10.0.0/16"
+  cidr_block = "10.0.0.0/16"
 }
 
 resource "aws_subnet" "main" {
@@ -50,7 +50,7 @@ resource "aws_security_group" "main" {
 resource "aws_instance" "Apache_and_Docker" {
   ami           = "ami-01a00762f46d584a1" # Replace with a valid AMI ID for your region
   instance_type = "t3.micro"
-    key_name = variable.key_name
+    key_name = var.key_name
   subnet_id     = aws_subnet.main.id
   security_groups = [aws_security_group.main.name]
 
@@ -63,7 +63,7 @@ resource "aws_instance" "Apache_and_Docker" {
 resource "aws_instance" "Jenkins_Worker_Node" {
   ami           = "ami-01a00762f46d584a1" # Replace with a valid AMI ID for your region
   instance_type = "t3.micro"
-  key_name = variable.key_name
+  key_name = var.key_name
   subnet_id     = aws_subnet.main.id
   security_groups = [aws_security_group.main.name]
 
