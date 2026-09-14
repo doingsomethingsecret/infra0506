@@ -1,4 +1,0 @@
-- hosts: localhost
-  become: no
-  roles:
-    - nodejs

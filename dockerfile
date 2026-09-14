@@ -1,12 +1,12 @@
-# STAGE 1
-FROM node:18-alpine AS build
+#STAGE 1: Build React App
+
+FROM node:18-alpine AS Build 
 WORKDIR /app
-COPY react-app/package*.json ./
+COPY package.json package-lock.json ./
 RUN npm install
-COPY react-app/ ./
+COPY react-app/ .
 RUN npm run build
 
-#STAGE 2
+#STAGE 2: Serve React App with Nginx
 FROM nginx:alpine
-COPY --from=build /app/build /usr/share/nginx/html
-EXPOSE 80
+COPY --from=Build /app/build /usr/share/nginx/html

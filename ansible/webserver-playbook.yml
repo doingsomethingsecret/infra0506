@@ -1,4 +1,0 @@
-- hosts: webserver
-  become: yes
-  roles:
-    - webserver

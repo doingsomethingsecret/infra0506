@@ -1,0 +1,35 @@
+- name: Installing JDK-17
+  apt:
+    name: openjdk-17-jdk
+    state: present
+  become: yes
+  update_cache: yes
+
+- name: Installing Jenkins
+  apt:
+    name: jenkins
+    state: present
+  become: yes 
+
+-name: Installing the Docker engine
+  apt:
+    name: docker.io
+    state: present
+  become: yes
+  update_cache: yes
+
+- name: ensuring the docker service is started and enabled
+  service:
+    name: docker
+    state: started
+    enabled: yes
+  become: yes
+
+-name: Adding the Jenkins user to the Docker group
+  user:
+    name: jenkins
+    groups: docker
+    append: yes
+  become: yes
+
+  
